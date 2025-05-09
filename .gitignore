@@ -1,0 +1,39 @@
+# 모든 파일을 기본적으로 무시
+*
+
+# 다음 파일/폴더만 추적
+!.gitignore
+!.gitattributes
+!*.html
+!*.js
+!*.css
+!*.py
+!*.md
+!ai/
+!ai/*.py
+!ai/*.md
+!screenshots/
+
+# 노드 모듈
+node_modules/
+
+# 파이썬 캐시
+__pycache__/
+*.py[cod]
+*$py.class
+
+# 가상환경
+venv/
+.env
+.venv
+env/
+
+# 큰 파일
+cuda_installer.exe
+*.gguf
+models_cache/
+gguf_models/
+
+# 기타
+.DS_Store
+.git/
