@@ -1,5 +1,7 @@
 # 파일이 너무 커서 끊어서 올리다보니 에러가 발생할 수도 있음.. 해결은 알아서... git lfs로 해도 히스토리 충돌 발생.
 
+- https://www.youtube.com/watch?v=yQDCFTQzxFg
+  
 ![image](https://github.com/user-attachments/assets/5470b5de-4018-4b0b-8757-69df8284596f)
 
 ![image](https://github.com/user-attachments/assets/e3208b5f-ddab-4d70-a731-a89bef02ebbf)
