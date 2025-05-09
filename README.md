@@ -1,6 +1,6 @@
 # 파일이 너무 커서 끊어서 올리다보니 에러가 발생할 수도 있습니다..
 
- -https://www.youtube.com/watch?v=yQDCFTQzxFg
+ - https://www.youtube.com/watch?v=yQDCFTQzxFg
 
 ![image](https://github.com/user-attachments/assets/5470b5de-4018-4b0b-8757-69df8284596f)
 
