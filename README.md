@@ -1,3 +1,13 @@
+
+![image](https://github.com/user-attachments/assets/5470b5de-4018-4b0b-8757-69df8284596f)
+
+![image](https://github.com/user-attachments/assets/e3208b5f-ddab-4d70-a731-a89bef02ebbf)
+
+![image](https://github.com/user-attachments/assets/a35f6dfd-77e7-4f0b-b856-a2fc40eea1b2)
+
+
+
+
 # 출결 관리 시스템 AI 연동 가이드
 
 이 문서는 출결 관리 시스템의 AI 기능 설정 및 실행 방법을 설명합니다. 특히 GPU가 없는 환경에서도 DeepSeek AI 모델을 효율적으로 사용할 수 있는 방법을 안내합니다.
