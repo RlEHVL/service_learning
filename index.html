@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>지역 특성화</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>지역 특성화</h1>
+            <div class="date-display">
+                <span id="current-date"></span>
+            </div>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-button active" data-tab="attendance">출결 관리</button>
+            <button class="tab-button" data-tab="statistics">통계 분석</button>
+            <button class="tab-button" data-tab="ai-analysis">AI 분석</button>
+            <button class="tab-button" data-tab="personal-chat">개인 챗</button>
+            <button class="tab-button" data-tab="settings">설정</button>
+        </div>
+
+        <main>
+            <!-- 출결 관리 탭 -->
+            <section id="attendance" class="tab-content active">
+                <div class="actions">
+                    <button id="add-student">+ 학생 추가</button>
+                    <button id="import-students">엑셀에서 가져오기</button>
+                    <input type="file" id="excel-upload" accept=".xlsx, .xls, .csv" style="display: none;">
+                    <button id="save-attendance">출결 저장</button>
+                    <button id="export-data">데이터 내보내기</button>
+                </div>
+
+                <div class="class-info">
+                    <select id="class-selector">
+                        <option value="1">1학년 1반</option>
+                        <option value="2">1학년 2반</option>
+                        <option value="3">1학년 3반</option>
+                    </select>
+                    <div class="summary">
+                        <span class="total">전체: <span id="total-count">0</span>명</span>
+                        <span class="present">출석: <span id="present-count">0</span>명</span>
+                        <span class="late">지각: <span id="late-count">0</span>명</span>
+                        <span class="absent">결석: <span id="absent-count">0</span>명</span>
+                    </div>
+                </div>
+
+                <div class="student-list-container">
+                    <table id="student-list">
+                        <thead>
+                            <tr>
+                                <th>번호</th>
+                                <th>이름</th>
+                                <th>출결 상태</th>
+                                <th>사유</th>
+                                <th>비고</th>
+                                <th>작업</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- 학생 목록이 JavaScript로 채워집니다 -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 통계 분석 탭 -->
+            <section id="statistics" class="tab-content">
+                <div class="date-range">
+                    <label for="start-date">시작일:</label>
+                    <input type="date" id="start-date">
+                    <label for="end-date">종료일:</label>
+                    <input type="date" id="end-date">
+                    <button id="update-stats">통계 업데이트</button>
+                </div>
+
+                <div class="charts-container">
+                    <div class="chart-box">
+                        <h3>일별 출결 현황</h3>
+                        <canvas id="daily-chart"></canvas>
+                    </div>
+                    <div class="chart-box">
+                        <h3>학생별 출결 현황</h3>
+                        <canvas id="student-chart"></canvas>
+                    </div>
+                </div>
+
+                <div class="stats-summary">
+                    <h3>주요 통계</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h4>평균 출석률</h4>
+                            <p id="avg-attendance">0%</p>
+                        </div>
+                        <div class="stat-card">
+                            <h4>지각 빈도</h4>
+                            <p id="late-frequency">0회</p>
+                        </div>
+                        <div class="stat-card">
+                            <h4>결석 빈도</h4>
+                            <p id="absent-frequency">0회</p>
+                        </div>
+                        <div class="stat-card">
+                            <h4>완벽 출석 학생</h4>
+                            <p id="perfect-attendance">0명</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- AI 분석 탭 -->
+            <section id="ai-analysis" class="tab-content">
+                <div class="api-settings">
+                    <label for="api-key">Hugging Face API 키:</label>
+                    <input type="password" id="api-key" placeholder="기본 API 키가 제공됩니다 (선택사항)">
+                    <button id="save-api-key">저장</button>
+                    <div class="api-info">
+                        <p>✓ 기본 API 키가 이미 설정되어 있어 별도 설정 없이 사용 가능합니다.</p>
+                        <p>✓ 고급 사용자는 자신의 API 키를 입력할 수 있습니다.</p>
+                    </div>
+                </div>
+
+                <div class="analysis-options">
+                    <h3>분석 옵션</h3>
+                    <div class="option-buttons">
+                        <button class="analysis-button" data-type="attendance-patterns">출결 패턴 분석</button>
+                        <button class="analysis-button" data-type="student-risk">위험군 학생 파악</button>
+                        <button class="analysis-button" data-type="improvement-suggestions">개선 방안 제안</button>
+                        <button class="analysis-button" data-type="custom">사용자 정의 분석</button>
+                    </div>
+                    <div id="custom-analysis" style="display:none;">
+                        <textarea id="custom-prompt" placeholder="분석하고 싶은 내용을 자세히 입력하세요..."></textarea>
+                        <button id="run-custom-analysis">분석 실행</button>
+                    </div>
+                </div>
+
+                <div class="analysis-result">
+                    <h3>AI 분석 결과</h3>
+                    <div id="ai-result" class="result-box">
+                        <p class="placeholder-text">분석 버튼을 클릭하면 AI 분석 결과가 이곳에 표시됩니다.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 개인 챗 탭 -->
+            <section id="personal-chat" class="tab-content">
+                <div class="chat-container">
+                    <div class="chat-header">
+                        <h3>학급 AI와 대화하기</h3>
+                        <div class="chat-controls">
+                            <button id="clear-chat">대화 내용 지우기</button>
+                            <button id="save-chat">대화 저장</button>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-messages" id="chat-messages">
+                        <div class="message system">
+                            <div class="message-content">
+                                <p>안녕하세요! 학급 출결 관리 시스템 AI 비서입니다. 무엇을 도와드릴까요?</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-input-container">
+                        <textarea id="chat-input" placeholder="메시지를 입력하세요..." rows="3"></textarea>
+                        <button id="send-message">전송</button>
+                    </div>
+                    
+                    <div class="chat-options">
+                        <h4>빠른 질문 예시</h4>
+                        <div class="quick-questions">
+                            <button class="question-button" data-question="지난 주 가장 결석이 많았던 학생은 누구인가요?">지난 주 결석 많은 학생</button>
+                            <button class="question-button" data-question="반 출석률을 향상시키기 위한 방안을 제안해주세요.">출석률 향상 방안</button>
+                            <button class="question-button" data-question="자주 지각하는 학생들의 패턴을 분석해주세요.">지각 패턴 분석</button>
+                            <button class="question-button" data-question="오늘의 출결 상황을 요약해주세요.">오늘 출결 요약</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 설정 탭 -->
+            <section id="settings" class="tab-content">
+                <div class="settings-group">
+                    <h3>클래스 설정</h3>
+                    <div class="class-management">
+                        <div class="class-list">
+                            <h4>클래스 목록</h4>
+                            <ul id="class-list">
+                                <li>1학년 1반 <button class="edit-class">편집</button></li>
+                                <li>1학년 2반 <button class="edit-class">편집</button></li>
+                                <li>1학년 3반 <button class="edit-class">편집</button></li>
+                            </ul>
+                            <button id="add-class">+ 클래스 추가</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-group">
+                    <h3>AI 모델 설정</h3>
+                    <div class="ai-model-settings">
+                        <div class="form-group checkbox">
+                            <label>
+                                <input type="checkbox" id="use-local-model"> DeepSeek R1 로컬 모델 사용
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label for="local-model-status">로컬 모델 상태:</label>
+                            <span id="local-model-status">연결되지 않음</span>
+                            <button id="test-local-model">연결 테스트</button>
+                        </div>
+                        <div class="form-info">
+                            <p>✓ 로컬 모델을 사용하면 인터넷 연결 없이도 AI 분석이 가능합니다.</p>
+                            <p>✓ 사용하기 전에 <code>python ai/local_model.py</code> 명령어로 로컬 서버를 실행해야 합니다.</p>
+                            <p>✓ 자세한 설정 방법은 <a href="ai/README_LOCAL_MODEL.md" target="_blank">설정 가이드</a>를 참조하세요.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-group">
+                    <h3>서버 연결 설정</h3>
+                    <div class="server-settings">
+                        <div class="form-group">
+                            <label for="server-endpoint">서버 엔드포인트 URL:</label>
+                            <input type="text" id="server-endpoint" placeholder="https://your-server-api.com/attendance-data">
+                        </div>
+                        <div class="form-group">
+                            <label for="server-api-key">서버 API 키:</label>
+                            <input type="password" id="server-api-key" placeholder="서버 인증 키를 입력하세요">
+                        </div>
+                        <div class="form-group checkbox">
+                            <label>
+                                <input type="checkbox" id="enable-server-sync"> 서버 동기화 활성화
+                            </label>
+                        </div>
+                        <div class="server-actions">
+                            <button id="save-server-settings">설정 저장</button>
+                            <button id="test-server-connection">서버 연결 테스트</button>
+                            <button id="sync-data">데이터 동기화</button>
+                            <button id="fetch-server-data">서버 데이터 가져오기</button>
+                        </div>
+                        <div id="server-status" class="status-box">
+                            <p>서버 상태: <span id="connection-status">연결되지 않음</span></p>
+                            <p>마지막 동기화: <span id="last-sync">없음</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-group">
+                    <h3>데이터 관리</h3>
+                    <div class="data-controls">
+                        <button id="backup-data">데이터 백업</button>
+                        <button id="restore-data">데이터 복원</button>
+                        <button id="clear-data" class="danger">모든 데이터 삭제</button>
+                    </div>
+                </div>
+
+                <div class="settings-group">
+                    <h3>시스템 설정</h3>
+                    <div class="system-settings">
+                        <label>
+                            <input type="checkbox" id="dark-mode"> 다크 모드
+                        </label>
+                        <label>
+                            <input type="checkbox" id="auto-save"> 자동 저장
+                        </label>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>학급 출결 관리 시스템 v1.0 &copy; 2024</p>
+        </footer>
+
+        <!-- 모달 다이얼로그 (개선) -->
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <span class="close" title="닫기">&times;</span>
+                <h2 id="modal-title">제목</h2>
+                <div id="modal-body">
+                    <!-- 모달 내용이 여기에 동적으로 채워집니다 -->
+                </div>
+                <div class="modal-footer">
+                    <button id="modal-cancel" class="button-secondary">취소</button>
+                    <button id="modal-confirm" class="button-primary">확인</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 스크립트 로드 순서 조정 -->
+    <script src="script.js"></script>
+    <script src="ai/ai_analyzer.js"></script>
+</body>
+</html> 
