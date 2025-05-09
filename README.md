@@ -1,6 +1,4 @@
-# 파일이 너무 커서 끊어서 올리다보니 에러가 발생할 수도 있습니다.. git lfs로 용량 통과가 되어도 브렌치 히스토리 충돌 발생.. 이런 충돌은 역량 부족으로 짧은 기간에 수행 불가능.
-
-- https://www.youtube.com/watch?v=yQDCFTQzxFg
+# 파일이 너무 커서 끊어서 올리다보니 에러가 발생할 수도 있습니다..
   
 ![image](https://github.com/user-attachments/assets/5470b5de-4018-4b0b-8757-69df8284596f)
 
